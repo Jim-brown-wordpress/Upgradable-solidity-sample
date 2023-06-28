@@ -8,22 +8,21 @@ const hre = require("hardhat");
 
 async function main() {
 
-  const ERC20UpgradableV1 = await ethers.getContractFactory(
-    "ERC20UpgradableV1"
-  );
-  console.log("Deploying ERC20UpgradableV1...");
-  const contract = await upgrades.deployProxy(ERC20UpgradableV1, [], {
-    initializer: "initialize",
-    kind: "transparent",
-  });
-  await contract.deployed();
-  console.log("ERC20UpgradableV1 deployed to:", contract.address);
+    const ERC20UpgradableV2 = await ethers.getContractFactory(
+        "ERC20UpgradableV2"
+    );
+    console.log("Upgrading ERC20UpgradableV1...");
+    await upgrades.upgradeProxy(
+        "0xC81cBaB47B1e6D6d20d4742721e29f22C5835dcB",
+        ERC20UpgradableV2
+    );
+    console.log("Upgraded Successfully");
 
 }
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
 main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
+    console.error(error);
+    process.exitCode = 1;
 });
